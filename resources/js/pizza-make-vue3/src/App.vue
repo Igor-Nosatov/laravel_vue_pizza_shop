@@ -1,6 +1,24 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue'
+import { kebabCase } from 'lodash'
+
+interface MenuItem {
+  name: string;
+}
+
+const menuItems = ref<MenuItem[]>([
+  { name: 'Pizza' },
+  { name: 'Burgers' },
+  { name: 'FriMenyu' },
+  { name: 'Shaurma' },
+  { name: 'Special' },
+  { name: 'Deserty' },
+  { name: 'Napitki' },
+  { name: 'Sauce' }
+]);
+
 </script>
 
 <template>
@@ -12,13 +30,21 @@ import HelloWorld from './components/HelloWorld.vue'
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <ul>
+            <li v-for="menuItem in menuItems" :key="menuItem">
+              <RouterLink :to="{ name: 'menu', params: { menuItem: kebabCase(menuItem.name) }}">
+                {{ menuItem.name }}
+              </RouterLink>
+            </li>
+          </ul>
       </nav>
     </div>
   </header>
-
   <RouterView />
 </template>
+
+
+
 
 <style scoped>
 header {
